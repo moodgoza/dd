@@ -8,14 +8,20 @@ const getStudents = () => {
 
 const getStudent = (id) => {
     return new Promise((res, rej) => {
-        res(data.find(s => s.id === id));
+        const student = data.find(s => s.id === id);
+        if(!student)
+        rej({message: "student not found"});
+        res(student);
     })
 }
 
 const updateStudent = (id) => {
     return new Promise((res, rej) => {
         let student = data.find(d => d.id === id);
-        student['name'] = 'Abood';
+
+        if(!student)
+        rej({message: "student not found"});
+        student['name'] = 'Emad';
         res(student);
     })
 
@@ -23,6 +29,11 @@ const updateStudent = (id) => {
 
 const deleteStudent = (id) => {
     return new Promise((res, rej) => {
+        const student = data.find(d => d.id === id);
+
+        if(!student)
+        rej({message: "student not found"});
+
         data = data.filter(d => d.id !== id);
         res(data);
     })
@@ -40,14 +51,17 @@ const createStudent = async (req) => {
         })
          console.log(body)
 
-       
-
+         
         req.on('end', () => {
             const student = JSON.parse(body);
-            console.log(student);
+            const {name} = student;
+
+            if(!name)
+            rej({message: "name is requiered"});
+            
             let newStudent = {
-                id: Math.floor(5 + Math.random() * 10).toString(),
-                ...student
+                ...student,
+                id: Math.floor(5 + Math.random() * 10).toString()
             }
 
             data = [...data, newStudent];
