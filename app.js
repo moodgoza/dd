@@ -47,5 +47,5 @@ const server = http.createServer(async (req, res) => {
 
 })
 server.listen(5000, () => {
-    console.log("Server listening onport 5000");
+    console.log("Server listening on port 5000");
 })
